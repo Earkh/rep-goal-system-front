@@ -1,34 +1,36 @@
-import { QueryClient, useQueryClient } from '@tanstack/react-query';
-import { useMemo } from 'react';
+import { QueryClient, useQueryClient } from "@tanstack/react-query";
+import { useMemo } from "react";
 import {
-  RouterProvider,
   createBrowserRouter,
-} from 'react-router-dom';
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
 
+import { AppRoot } from "./routes/app/root";
 
-import { AppRoot } from './routes/app/root';
-
-export const createAppRouter = (queryClient: QueryClient) =>
+const createAppRouter = (queryClient: QueryClient) =>
   createBrowserRouter([
     {
-      path: '/',
-      element: (
-          <AppRoot />
-      ),
+      path: "/",
+      element: <AppRoot queryClient={queryClient} />,
       children: [
         {
-          path: '',
+          path: "",
+          element: <Navigate to="/home" replace />,
+        },
+        {
+          path: "home",
           lazy: async () => {
-            const { HomeRoute } = await import('./routes/app/home');
+            const { HomeRoute } = await import("./routes/app/home");
             return { Component: HomeRoute };
           },
         },
       ],
     },
     {
-      path: '*',
+      path: "*",
       lazy: async () => {
-        const { NotFoundRoute } = await import('./routes/not-found');
+        const { NotFoundRoute } = await import("./routes/not-found");
         return { Component: NotFoundRoute };
       },
     },

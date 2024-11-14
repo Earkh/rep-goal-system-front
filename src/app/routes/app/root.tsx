@@ -1,15 +1,25 @@
+import { ErrorBoundary } from "react-error-boundary";
+import { Outlet, useLocation } from "react-router-dom";
+import { Layout } from "components/layout/layout.tsx";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-import { ErrorBoundary } from 'react-error-boundary';
-import { Outlet, useLocation } from 'react-router-dom';
+type AppRootProps = {
+  queryClient: QueryClient;
+};
 
-export const AppRoot = () => {
+export const AppRoot = ({ queryClient }: AppRootProps) => {
   const location = useLocation();
+
   return (
-    <ErrorBoundary
-      key={location.pathname}
-      fallback={<div>Something went wrong!</div>}
-    >
-      <Outlet/>
-    </ErrorBoundary>
+    <QueryClientProvider client={queryClient}>
+      <ErrorBoundary
+        key={location.pathname}
+        fallback={<div>Something went wrong!</div>}
+      >
+        <Layout>
+          <Outlet />
+        </Layout>
+      </ErrorBoundary>
+    </QueryClientProvider>
   );
-}
+};
