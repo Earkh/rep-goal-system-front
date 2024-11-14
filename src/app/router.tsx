@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 
 import { AppRoot } from "./routes/app/root";
+import { ROUTES } from "@/routes.ts";
 
 const createAppRouter = (queryClient: QueryClient) =>
   createBrowserRouter([
@@ -16,13 +17,34 @@ const createAppRouter = (queryClient: QueryClient) =>
       children: [
         {
           path: "",
-          element: <Navigate to="/home" replace />,
+          element: <Navigate to={ROUTES.HOME} replace />,
         },
         {
-          path: "home",
+          path: ROUTES.HOME,
           lazy: async () => {
             const { HomeRoute } = await import("./routes/app/home");
             return { Component: HomeRoute };
+          },
+        },
+        {
+          path: ROUTES.EXERCISE,
+          lazy: async () => {
+            const { ExerciseRoute } = await import("./routes/app/exercise");
+            return { Component: ExerciseRoute };
+          },
+        },
+        {
+          path: ROUTES.ROUTINE,
+          lazy: async () => {
+            const { RoutineRoute } = await import("./routes/app/routine");
+            return { Component: RoutineRoute };
+          },
+        },
+        {
+          path: ROUTES.WORKOUT,
+          lazy: async () => {
+            const { WorkoutRoute } = await import("./routes/app/workout");
+            return { Component: WorkoutRoute };
           },
         },
       ],
